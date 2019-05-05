@@ -1,3 +1,5 @@
+import { CustomerActions } from '../resources/Customers';
+
 export const CustomersDef = `
 type Customer {
     fname: String
@@ -16,6 +18,7 @@ type Customer {
 }
 
 input CustomerInput {
+    _id: String
     fname: String
     lname: String
     region: String
@@ -39,6 +42,7 @@ export const CustomersQuery = `
 
 export const CustomersMutation = `
     createCustomer(customer: CustomerInput): Customer
+    updateCustomer(customer: CustomerInput): Customer
 `;
 
 const customers = [
@@ -81,7 +85,10 @@ export const CustomersResolver = {
   },
   Mutation: {
     createCustomer: (parent, args) => {
-      return customers[0];
+      return CustomerActions.createCustomer(args);
+    },
+    updateCustomer: (parent, args) => {
+      return CustomerActions.updateCustomer(args);
     }
   }
 };

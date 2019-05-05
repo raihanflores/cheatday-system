@@ -1,3 +1,5 @@
+import { InvoiceActions } from '../resources/Invoices';
+
 export const InvoicesDef = `
 type InvoiceItem {
     product_id: String
@@ -35,6 +37,7 @@ type Invoice {
     business_address: String
     amount: Float
     total_amount: Float
+    total_discount: Float
     invoice_item: [InvoiceItem]
     note: [String]
     status: String
@@ -45,11 +48,15 @@ type Invoice {
 }
 
 input InvoiceInput {
+    _id: String
     description: String
     business_name: String
     business_address: String
     amount: Float
     total_amount: Float
+    total_discount: Float
+    paid_amount: Float
+    balance: Float
     invoice_item: [InvoiceItemInput]
     note: [String]
     status: String
@@ -66,7 +73,8 @@ export const InvoicesQuery = `
 `;
 
 export const InvoicesMutation = `
-    createInvoice(invoice: InvoiceInput): Invoice!
+  createInvoice(invoice: InvoiceInput): Invoice
+  updateInvoice(invoice: InvoiceInput): Invoice
 `;
 
 const invoices = [
@@ -135,7 +143,10 @@ export const InvoicesResolver = {
   },
   Mutation: {
     createInvoice: (parent, args) => {
-      return invoices[0];
+      return InvoiceActions.createInvoice(args);
+    },
+    updateInvoice: (parent, args) => {
+      return InvoiceActions.updateInvoice(args);
     }
   }
 };

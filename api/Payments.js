@@ -1,3 +1,5 @@
+import { PaymentActions } from '../resources/Payments';
+
 export const PaymentsDef = `
 type PaymentItem {
     invoice_id: String
@@ -51,7 +53,8 @@ export const PaymentsQuery = `
 `;
 
 export const PaymentsMutation = `
-    createPayment(payment: PaymentInput): Payment!
+    createPayment(payment: PaymentInput): Payment
+    updatePayment(payment: PaymentInput): Payment
 `;
 
 const payments =  [
@@ -86,7 +89,10 @@ export const PaymentsResolver = {
   },
   Mutation: {
     createPayment: (parent, args) => {
-      return payments[0];
+      return PaymentActions.createPayment(args);
+    },
+    updatePayment: (parent, args) => {
+      return PaymentActions.updatePayment(args);
     }
   }
 };
